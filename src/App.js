@@ -1,4 +1,7 @@
 import { Routes, Route, Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import * as gameService from './services/gameService.js';
+
 import Header from './components/Header/Header.js';
 import Home from './components/Home';
 import Login from './components/Login/Login.js';
@@ -6,9 +9,20 @@ import Register from './components/Register/Register.js';
 import CreateGame from './components/CreateGame/CreateGame.js';
 import Catalog from './components/Catalog/Catalog.js';
 
+
 import './App.css';
 
 function App() {
+  const [games, setGames] = useState([]);
+
+  useEffect(() => {
+    gameService.getAll()
+      .then(result => {
+        console.log(result);
+        setGames(result);
+      });
+  }, []);
+
   return (
     <div id="box">
 
@@ -17,22 +31,22 @@ function App() {
       {/* Main Content */}
       <main id="main-content">
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Home games={games}/>} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/create" element={<CreateGame />} />
-          <Route path="/catalog" element={<Catalog />} />
+          <Route path="/catalog" element={<Catalog games={games}/>} />
         </Routes>
-        
+
 
       </main>
 
 
 
-     
-       
 
-     {/* Edit Page ( Only for the creator )*/}
+
+
+      {/* Edit Page ( Only for the creator )*/}
       {/* <section id="edit-page" className="auth">
     //     <form id="edit">
     //       <div className="container">
@@ -58,8 +72,8 @@ function App() {
     //     </form>
     //   </section> */}
 
-       {/*Details Page*/}
-    {/* //   <section id="game-details">
+      {/*Details Page*/}
+      {/* //   <section id="game-details">
     //     <h1>Game Details</h1>
     //     <div className="info-section">
     //       <div className="game-header">
@@ -120,7 +134,7 @@ function App() {
     //   </section>
 
 
-    
+
     // </div>
 
   );

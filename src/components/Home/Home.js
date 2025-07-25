@@ -1,17 +1,7 @@
-import { useEffect, useState } from 'react';
-import * as gameService from '../../services/gameService.js';
+
 import LatestGame from '../Home/LatestGame/LatestGame.js';
 
-const Home = () => {
-    const [games, setGames] = useState([]);
-
-    useEffect(() => {
-        gameService.getAll()
-            .then(result => {
-                console.log(result);
-                setGames(result);
-            });
-    }, []);
+const Home = ({games}) => {
 
     const latestGames = games.map(x => <LatestGame key={x._id} game={x} />);
     
