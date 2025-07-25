@@ -1,3 +1,4 @@
+import { Routes, Route, Link } from 'react-router-dom';
 import Header from './components/Header/Header.js';
 import Home from './components/Home/Home.js';
 
@@ -5,19 +6,22 @@ import './App.css';
 
 function App() {
   return (
-    // <div id="box">
-    <>
+    <div id="box">
+
       <Header />
-      <Home />
-    </>
-      
 
-      // {/* Main Content */}
-      // <main id="main-content"></main>
+      {/* Main Content */}
+      <main id="main-content">
+        <Routes>
+          <Route path="/" element={<Home />} />
+        </Routes>
+        
 
-      
-    //   {/* Login Page ( Only for Guest users ) */}
-    //   {/* <section id="login-page" className="auth">
+      </main>
+
+
+      {/* Login Page ( Only for Guest users ) */}
+      {/* <section id="login-page" className="auth">
     //     <form id="login">
     //       <div className="container">
     //         <div className="brand-logo" />
@@ -40,8 +44,8 @@ function App() {
     //       </div>
     //     </form>
     //   </section> */}
-    //   {/* Register Page ( Only for Guest users ) */}
-    //   {/* <section id="register-page" className="content auth">
+     {/* Register Page ( Only for Guest users ) */}
+      {/* <section id="register-page" className="content auth">
     //     <form id="register">
     //       <div className="container">
     //         <div className="brand-logo" />
@@ -66,8 +70,8 @@ function App() {
     //       </div>
     //     </form>
     //   </section> */}
-    //   {/* Create Page ( Only for logged-in users ) */}
-    //   {/* <section id="create-page" className="auth">
+       {/* Create Page ( Only for logged-in users ) */}
+       {/* <section id="create-page" className="auth">
     //     <form id="create">
     //       <div className="container">
     //         <h1>Create Game</h1>
@@ -110,8 +114,8 @@ function App() {
     //       </div>
     //     </form>
     //   </section> */}
-    //   {/* Edit Page ( Only for the creator )*/}
-    //   {/* <section id="edit-page" className="auth">
+     {/* Edit Page ( Only for the creator )*/}
+      {/* <section id="edit-page" className="auth">
     //     <form id="edit">
     //       <div className="container">
     //         <h1>Edit Game</h1>
@@ -135,9 +139,9 @@ function App() {
     //       </div>
     //     </form>
     //   </section> */}
-      
-    //   {/*Details Page*/}
-    //   <section id="game-details">
+
+       {/*Details Page*/}
+    {/* //   <section id="game-details">
     //     <h1>Game Details</h1>
     //     <div className="info-section">
     //       <div className="game-header">
@@ -166,8 +170,8 @@ function App() {
     //           </li>
     //         </ul>
     //         {/* Display paragraph: If there are no games in the database */}
-    //         <p className="no-comment">No comments.</p>
-    //       </div>
+            // <p className="no-comment">No comments.</p>
+         // </div>
     //       {/* Edit/Delete buttons ( Only for creator of this game )  */}
     //       <div className="buttons">
     //         <a href="#" className="button">
@@ -183,7 +187,7 @@ function App() {
     //     <article className="create-comment">
     //       <label>Add new comment:</label>
     //       <form className="form">
-    //         <textarea
+    //         <textarea */}
     //           name="comment"
     //           placeholder="Comment......"
     //           defaultValue={""}

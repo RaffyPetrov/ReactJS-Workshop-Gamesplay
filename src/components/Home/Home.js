@@ -8,10 +8,13 @@ const Home = () => {
     useEffect(() => {
         gameService.getAll()
             .then(result => {
+                console.log(result);
                 setGames(result);
             });
     }, []);
 
+    const latestGames = games.map(x => <LatestGame key={x._id} game={x} />);
+    
     return (
         <section id="welcome-world">
             <div className="welcome-message">
@@ -23,7 +26,7 @@ const Home = () => {
                 <h1>Latest Games</h1>
 
                 {games.length > 0
-                    ? games.map(x => <LatestGame key={x._id} game={x} />)
+                    ? latestGames
                     : <p className="no-articles">No games yet</p>}
 
 
