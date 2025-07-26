@@ -47,19 +47,25 @@ const GameDetails = ({
                 <div className="details-comments">
                     <h2>Comments:</h2>
                     <ul>
-
+{/* 
                         <li className="comment">
                             <p>Content: I rate this one quite highly.</p>
-                        </li>
-                        <li className="comment">
-                            <p>Content: The best game.</p>
-                        </li>
-                    </ul>
+                        </li> */}
 
-                    <p className="no-comment">No comments.</p>
+                        {game.comments?.map(x => 
+                            <li className="comment">
+                                <p>{x}</p>
+                            </li>
+                        )}
+                    </ul>
+                    {!game.comments && 
+                        <p className="no-comment">No comments.</p>
+                    }
+                    
                 </div>
 
-                {/* Edit/Delete buttons ( Only for creator of this game )  */}
+
+
                 <div className="buttons">
                     <a href="#" className="button">
                         Edit
