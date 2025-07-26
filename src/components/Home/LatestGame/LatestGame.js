@@ -20,7 +20,7 @@ const LatestGame = ({
                 <Link to={`/catalog/${game._id}`} className="btn details-btn">
                     Details
                 </Link>
-            </div>
+            </div> 
         </div>
     );
 };
