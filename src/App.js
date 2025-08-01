@@ -10,6 +10,7 @@ import Login from './components/Login/Login.js';
 import Logout from './components/Logout/Logout.js';
 
 import CreateGame from './components/CreateGame/CreateGame.js';
+import EditGame from './components/EditGame/EditGame.js';
 import Catalog from './components/Catalog/Catalog.js';
 import GameDetails from './components/GameDetails/GameDetails.js';
 
@@ -54,6 +55,10 @@ function App() {
     navigate('/catalog');
   };
 
+  const gameEdit = (gameId, gameData) => {
+    setGames(state => state.map(x => x._id === gameId ? gameData : x))
+  }
+
   useEffect(() => {
     gameService.getAll()
       .then(result => {
@@ -68,7 +73,7 @@ function App() {
         <Header />
 
         {/* Main Content */}
-        <GameContext.Provider value={{games, gameAdd}}>
+        <GameContext.Provider value={{games, gameAdd, gameEdit}}>
           <main id="main-content">
             <Routes>
               <Route path="/" element={<Home games={games} />} />
@@ -79,38 +84,12 @@ function App() {
                 </Suspense>} />
               <Route path="/logout" element={<Logout />} />
               <Route path="/create" element={<CreateGame addGameHandler={gameAdd} />} />
+              <Route path="/games/:gameId/edit" element={<EditGame />} />
               <Route path="/catalog" element={<Catalog games={games} />} />
               <Route path="/catalog/:gameId" element={<GameDetails games={games} addComment={addComment} />} />
             </Routes>
           </main>
         </GameContext.Provider>
-
-        {/* Edit Page ( Only for the creator )*/}
-        {/* <section id="edit-page" className="auth">
-    //     <form id="edit">
-    //       <div className="container">
-    //         <h1>Edit Game</h1>
-    //         <label htmlFor="leg-title">Legendary title:</label>
-    //         <input type="text" id="title" name="title" defaultValue="" />
-    //         <label htmlFor="category">Category:</label>
-    //         <input type="text" id="category" name="category" defaultValue="" />
-    //         <label htmlFor="levels">MaxLevel:</label>
-    //         <input
-    //           type="number"
-    //           id="maxLevel"
-    //           name="maxLevel"
-    //           min={1}
-    //           defaultValue=""
-    //         />
-    //         <label htmlFor="game-img">Image:</label>
-    //         <input type="text" id="imageUrl" name="imageUrl" defaultValue="" />
-    //         <label htmlFor="summary">Summary:</label>
-    //         <textarea name="summary" id="summary" defaultValue={""} />
-    //         <input className="btn submit" type="submit" defaultValue="Edit Game" />
-    //       </div>
-    //     </form>
-    //   </section> */}
-
       </div>
     </AuthContext.Provider>
 
