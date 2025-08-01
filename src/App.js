@@ -1,8 +1,9 @@
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import { useEffect, useState, lazy, Suspense } from 'react';
 import * as gameService from './services/gameService.js';
+import { AuthContext } from '../../games-play/src/contexts/AuthContext.js'
 
-import { AuthContext } from './components/contexts/AuthContext.js';
+
 import uniqid from 'uniqid';
 
 import Header from './components/Header/Header.js';

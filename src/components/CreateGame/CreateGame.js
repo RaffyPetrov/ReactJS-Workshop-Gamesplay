@@ -1,3 +1,5 @@
+import * as gameService from '../../services/gameService.js';
+
 const CreateGame = ({
     addGameHandler
 }) => {
@@ -6,7 +8,11 @@ const CreateGame = ({
 
         const gameData = Object.fromEntries(new FormData(e.target));
 
-        console.log(gameData);
+        gameService.create(gameData)
+            .then(result => {
+                console.log(result);
+            });
+
 
         addGameHandler(addGameHandler)
     }

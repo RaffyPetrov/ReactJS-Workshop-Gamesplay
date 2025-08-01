@@ -2,7 +2,7 @@
 import { useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { AuthContext } from '../contexts/AuthContext.js';
+import { AuthContext } from '../../contexts/AuthContext';
 import * as authService from '../../services/authService.js'
 
 
