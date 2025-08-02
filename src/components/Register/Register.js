@@ -1,18 +1,13 @@
-import { useContext } from 'react';
 import {useNavigate} from 'react-router-dom'
 
 import * as authService from "../../services/authService.js"
-import { AuthContext } from '../../contexts/AuthContext';
+import { withAuth } from '../../contexts/AuthContext.js';
 
 
-
-const Register = () => {
-
-    const { userLogin } = useContext(AuthContext);
+const Register = ({auth}) => {
     const navigate = useNavigate();
 
     const onSubmit = (e) => {
-    
         e.preventDefault();
 
         const formData = new FormData(e.target);
@@ -27,11 +22,12 @@ const Register = () => {
 
         authService.register(email, password)
             .then((authData) => {
-                userLogin(authData);
+                auth.userLogin(authData);
                 navigate('/');
             });
 
     }
+
     return (
 
         <section id="register-page" className="content auth">
@@ -62,4 +58,4 @@ const Register = () => {
     );
 };
 
-export default Register;
+export default withAuth(Register);

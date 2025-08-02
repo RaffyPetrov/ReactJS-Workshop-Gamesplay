@@ -1,8 +1,9 @@
-
+import { useContext } from 'react';
+import { GameContext } from '../../contexts/GameContext.js';
 import LatestGame from '../Home/LatestGame/LatestGame.js';
 
-const Home = ({games}) => {
-
+const Home = () => {
+    const { games } = useContext(GameContext) 
     const latestGames = games.map(x => <LatestGame key={x._id} game={x} />);
     
     return (
