@@ -4,7 +4,7 @@ import { GameContext } from '../../contexts/GameContext.js';
 import * as gameService from '../../services/gameService.js';
 
 const CreateGame = () => {
-    const { gameAdd} = useContext(GameContext);
+    const { gameAdd } = useContext(GameContext);
 
     const onSubmit = (e) => {
         e.preventDefault();

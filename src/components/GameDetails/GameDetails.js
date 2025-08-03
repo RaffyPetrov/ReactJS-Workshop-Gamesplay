@@ -1,135 +1,100 @@
-import { useParams, Link } from 'react-router-dom';
-import { useState, useEffect, useContext } from 'react';
+import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useEffect, useContext } from 'react';
 import * as gameService from '../../services/gameService.js'
+import * as commentService from '../../services/commentService.js'
 import { GameContext } from '../../contexts/GameContext.js';
 
 const GameDetails = () => {
-    const { addComment } = useContext(GameContext);
+    const navigate = useNavigate();
+    const { addComment, fetchGameDetails, selectGame, gameRemove } = useContext(GameContext);
     const { gameId } = useParams();
-    const [currentGame, setCurrentGame] = useState({});
 
-    const [comment, setComment] = useState({
-        username: '',
-        comment: '',
-    });
 
-    const [error, setError] = useState({
-        username: '',
-        comment: '',
-    });
+    const currentGame = selectGame(gameId);
+
 
     useEffect(() => {
-        gameService.getOne(gameId)
-            .then(result => {
-                setCurrentGame(result);
-            });
-    });
+        (async() => {
+            const gameDetails = await gameService.getOne(gameId);
+            console.log(gameDetails);
+            
+            const gameComments = await commentService.getByGameId(gameId);  
 
+            fetchGameDetails(gameId, {...gameDetails, comments: gameComments.map(x => `${x.user.email}: ${x.text}`) });
+        })();
 
+    }, []); 
 
     const addCommentHandler = (e) => {
         e.preventDefault();
 
-        const result = `${comment.username}: ${comment.comment}`;
+        const formData = new FormData(e.target);
 
-        addComment(gameId, result);
+        const comment = formData.get('comment');
 
+        commentService.create(gameId, comment)
+            .then(result => {
+                addComment(gameId, comment);
+            });
     };
 
-    const onChange = (e) => {
-        setComment(state => ({
-            ...state,
-            [e.target.name]: e.target.value
-        }));
-    };
+    const gameDeleteHandler = (gameId) => {
+        const confirmation = window.confirm('Are you sure you want to delete this game?');
 
-    const validateUsername = (e) => {
-        const username = e.target.value;
-        let errorMessage = '';
-
-        if (username.length < 4) {
-            errorMessage = 'Username must be longer than 4 characters!';
-        } else if (username.length > 10) {
-            errorMessage = 'Username must be shorter than 10 characters!';
+        if (confirmation) {
+            gameService.remove(gameId)
+                .then(result => {
+                    gameRemove(gameId);
+                    navigate('/catalog')
+                })
         }
-
-        setError(state => ({
-            ...state,
-            username: errorMessage,
-        }))
+        
     }
 
-    return (
 
+    return (
         <section id="game-details">
             <h1>Game Details</h1>
             <div className="info-section">
                 <div className="game-header">
-                    <img className="game-img" src={currentGame.imageUrl} />
+                    <img className="game-img" src={currentGame.imageUrl} alt={currentGame.title} />
                     <h1>{currentGame.title}</h1>
                     <span className="levels">MaxLevel: {currentGame.maxLevel}</span>
                     <p className="type">{currentGame.category}</p>
                 </div>
-                <p className="text">
-                    {currentGame.summary}
-                </p>
+                <p className="text">{currentGame.summary}</p>
 
                 <div className="details-comments">
                     <h2>Comments:</h2>
-                    {/* <ul>
-                        
-                        <li className="comment">
-                            <p>Content: I rate this one quite highly.</p>
-                        </li>
-
-                        {currentGame.comments?.map(x =>
-                            <li className="comment">
-                                <p>{x}</p>
-                            </li>
-                        )}
-                    </ul>
-                    {!currentGame.comments &&
+                    {currentGame.comments?.length > 0 ? (
+                        <ul>
+                            {currentGame.comments.map((x, i) => (
+                                <li className="comment" key={i}>
+                                    <p>{x}</p>
+                                </li>
+                            ))}
+                        </ul>
+                    ) : (
                         <p className="no-comment">No comments.</p>
-                    } */}
-
+                    )}
                 </div>
 
-
-
                 <div className="buttons">
-
                     <Link to={`/games/${gameId}/edit`} className="button">
                         Edit
                     </Link>
-                    <Link to="#" className="button">
+                    <button onClick={gameDeleteHandler} className="button">
                         Delete
-                    </Link>
-
+                    </button>
                 </div>
             </div>
-
 
             <article className="create-comment">
                 <label>Add new comment:</label>
                 <form className="form" onSubmit={addCommentHandler}>
-                    <input
-                        type="text"
-                        name="username"
-                        placeholder="John Doe"
-                        onChange={onChange}
-                        onBlur={validateUsername}
-                        value={comment.username}
-                    />
-                    {error.username &&
-                        <div style={{ color: 'red' }}>{error.username}</div>
-                    }
-
-
                     <textarea
                         name="comment"
                         placeholder="Comment......"
-                        onChange={onChange}
-                        value={comment.comment}
                     />
 
                     <input
@@ -142,5 +107,6 @@ const GameDetails = () => {
         </section>
     );
 };
+
 
 export default GameDetails;

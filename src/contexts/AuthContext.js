@@ -20,10 +20,22 @@ export const AuthProvider = ({
 
 
     return (
-        <AuthContext.Provider value={{ user: auth, userLogin, userLogout }}>
+        <AuthContext.Provider value={{ 
+            user: auth, 
+            userLogin, 
+            userLogout,
+            isAuthenticated: !auth.accessToken,
+        }}>
             {children}
         </AuthContext.Provider>
     );
+};
+
+// Custom Hook
+export const useAuthContext = () => {
+    const context = useContext(AuthContext);
+
+    return context;
 };
 
 //With HOC(higher-order component)
